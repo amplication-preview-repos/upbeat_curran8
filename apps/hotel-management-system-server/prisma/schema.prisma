@@ -1,0 +1,110 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model RestaurantPos {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  itemId      Int?
+  itemName    String?
+  price       Float?
+  quantity    Int?
+  totalAmount Float?
+}
+
+model CurioShopPos {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  itemId      Int?
+  itemName    String?
+  price       Float?
+  quantity    Int?
+  totalAmount Float?
+}
+
+model RoomService {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  serviceType String?
+  price       Float?
+  room        Room?    @relation(fields: [roomId], references: [id])
+  roomId      String?
+}
+
+model BarPos {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  itemId      Int?
+  itemName    String?
+  quantity    Int?
+  totalAmount Float?
+  price       Float?
+}
+
+model Reservation {
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  startDate     DateTime?
+  endDate       DateTime?
+  customerName  String?
+  customerEmail String?
+  room          Room?     @relation(fields: [roomId], references: [id])
+  roomId        String?
+}
+
+model Room {
+  id            String        @id @default(cuid())
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  roomNumber    Int?
+  typeField     String?
+  pricePerNight Float?
+  availability  Boolean?
+  reservations  Reservation[]
+  roomServices  RoomService[]
+}
+
+model Staff {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  firstName   String?
+  lastName    String?
+  email       String?
+  phoneNumber String?
+  role        String?
+}
+
+model Account {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  chartOfAccount  Json?
+  generalLedger   Json?
+  purchases       Json?
+  bankStatements  Json?
+  expenses        Json?
+  balanceSheet    Json?
+  incomeStatement Json?
+  trialBalance    Json?
+}
+
+model Store {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  storeItemId   Int?
+  storeItemName String?
+  stock         Int?
+  price         Float?
+}
